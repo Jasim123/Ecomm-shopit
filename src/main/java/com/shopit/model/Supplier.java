@@ -1,12 +1,11 @@
 package com.shopit.model;
 
 
-	import javax.persistence.Column;
-	import javax.persistence.Entity;
-	import javax.persistence.GeneratedValue;
-	import javax.persistence.GenerationType;
-	import javax.persistence.Id;
-	import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 	import org.springframework.stereotype.Component;
 
@@ -18,34 +17,46 @@ package com.shopit.model;
 	{
 		@Id
 		@GeneratedValue 
-		@Column(unique = true)
-		private int sid;
+		
+		
+		private int suppId;
 
-		private String name;
-		private String address;
-		public int getSid() {
-			return sid;
+	    @Column
+		private String suppName;
+		@Column
+		private String suppAdd;
+		@Column
+		private String contactNo;
+		public Supplier()
+		{
+			
 		}
-		public void setSid(int sid) {
-			this.sid = sid;
+		public int getSuppId() {
+			return suppId;
 		}
-		public String getName() {
-			return name;
+		public void setSuppId(int suppId) {
+			this.suppId = suppId;
 		}
-		public void setName(String name) {
-			this.name = name;
+		public String getSuppName() {
+			return suppName;
 		}
-		public String getAddress() {
-			return address;
+		public void setSuppName(String suppName) {
+			this.suppName = suppName;
 		}
-		public void setAddress(String address) {
-			this.address = address;
+		public String getSuppAdd() {
+			return suppAdd;
 		}
-		
-		
-		
+		public void setSuppAdd(String suppAdd) {
+			this.suppAdd = suppAdd;
+		}
+		public String getContactNo() {
+			return contactNo;
+		}
+		public void setContactNo(String contactNo) {
+			this.contactNo = contactNo;
+		}
+	
+
+
 
 	}
-
-
-

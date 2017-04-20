@@ -6,10 +6,10 @@ import com.shopit.model.Supplier;
 
 public interface SupplierDao
 {
-	public void saveorupdate(Supplier supplier);
+	public int sortId();
+	public void UpRecord(Supplier sup);
 	public Supplier DispRecord(int sid);
+	public void deleteSupplier(int sid);
 	public String listSupplier();
-	public void updateRecord(Supplier supp);
-	public void delete(int sid);
-	public int SortId();
+	public void saveSupplier(Supplier supp);
 }

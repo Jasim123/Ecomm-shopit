@@ -18,6 +18,7 @@ import com.shopit.model.UserDetail;
 import com.shopit.model.Category;
 import com.shopit.model.Supplier;
 import com.shopit.model.AdminProduct;
+import com.shopit.model.Cart;
 
 import java.util.Properties;
 
@@ -65,6 +66,7 @@ public class AppContextConfig
 		sessionBuilder.addAnnotatedClass(Supplier.class);
 		sessionBuilder.addAnnotatedClass(Category.class);
 		sessionBuilder.addAnnotatedClass(AdminProduct.class);
+		sessionBuilder.addAnnotatedClass(Cart.class);
 		
 		return sessionBuilder.buildSessionFactory();
 		

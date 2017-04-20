@@ -9,7 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
 import com.shopit.model.Category;
@@ -20,90 +19,105 @@ public class CategoryDaoImpl implements CategoryDao
 {
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionfactory;
 	
 	public void setSessionFactory(SessionFactory sessionfactory)
 	{
-		this.sessionFactory= sessionfactory;
+		this.sessionfactory= sessionfactory;
 	}
 	
- 
-
-	public void saveorupdate(Category cat) 
+	public String  list()
 	{
-		System.out.println("i am in supplier dao class");
-		Session s = sessionFactory.openSession();
-		System.out.println("sesssion="+s);
-		s.beginTransaction();
-		s.saveOrUpdate(cat);
-		s.getTransaction().commit();
-		System.out.println("supplier data successfully done"+s);
-	
+		//creating session object    
+				Session session=sessionfactory.openSession();    
+				    
+				//creating transaction object    
+				Transaction t=session.beginTransaction();    
+		@SuppressWarnings("unchecked")
+		List<Category> listCategory = (List<Category>) session.createCriteria(Category.class)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		
-	}
-
+		Gson gson=new Gson();
+		String data=gson.toJson(listCategory);
+		t.commit();//transaction is commited    
+		session.close();  
 		
-	@SuppressWarnings("unchecked")
-	public String listCategory()
-	{
-		System.out.println("I am in View Supplier Dao Function");
-		Session s = sessionFactory.openSession();
-		Transaction tx  = s.beginTransaction();
-		//List<Supplier> slist = s.createCriteria(Supplier.class).list();
-		//List li = s.createCriteria(Supplier.class).list();
-		List li = s.createQuery("from Category").list();
-		Gson gson = new Gson();
-		String jsonlist = gson.toJson(li);
-		s.getTransaction().commit();
-		return jsonlist;
-	}
-
-
-	
-
-	public void delete(String cid) {
-		System.out.println(" delete called in supplier dao impl..");
-		Session s = sessionFactory.openSession();
-		Transaction t = s.beginTransaction();
-		Category cattodelete = s.get(Category.class, cid);
-				s.delete(cattodelete);
-		
-		t.commit();
-		s.close();
-		
-		
+		return data;
 	}
 	
-	public Category DispRecord(String cid)
-	{
-		Session se = sessionFactory.openSession();
-		se.beginTransaction();
-		Category cat = (Category)se.get(Category.class, cid);
-		return cat;
-	}
 	
-
-		public void updateRecord(Category cat)
-		{
-			Session se = sessionFactory.openSession();
-			se.beginTransaction();
-				String cid= cat.getId();
-			Category catobj = (Category)se.get(Category.class,cid);
-			catobj.setName(cat.getName());
-			catobj.setDescription(cat.getDescription());
+	
+	
+		public void saveOrUpdate(Category category) {
+		//creating session object    
+				Session session=sessionfactory.openSession();    
+				    
+				//creating transaction object    
+				Transaction t=session.beginTransaction();    
+		session.saveOrUpdate(category);
+		
+		t.commit();//transaction is commited    
+		session.close();  
+		
+	
+	}
+		
+		
+		public void delete(String id) {
+			//creating session object    
+					Session session=sessionfactory.openSession();    
+					    
+					//creating transaction object    
+					Transaction t=session.beginTransaction();    
+			Category CategoryToDelete = new Category();
+			CategoryToDelete.setId(id);
+			session.delete(CategoryToDelete);
+			t.commit();//transaction is commited    
+			session.close();  
 			
-			se.update(catobj);
-			se.getTransaction().commit();
 		}
 
 
-
+		public Category get(String id) {
+			//creating session object    
+					Session session=sessionfactory.openSession();    
+					    
+					//creating transaction object    
+					Transaction t=session.beginTransaction();    
+			String hql = "from"+" Category"+" where id=" + "'"+id+"'";
+			@SuppressWarnings("rawtypes")
+			Query query = session.createQuery(hql);
+			
+			@SuppressWarnings("unchecked")
+			List<Category> listCategory = (List<Category>) query.list();
+			
+			if (listCategory != null && !listCategory.isEmpty()) {
+				return listCategory.get(0);
+			}
+			t.commit();//transaction is commited    
+			session.close();  
+			
+			return null;
+		}
+		
 		
 
-
-
+		public void UpRecord(Category cat)
+		{
+			Session se=sessionfactory.openSession();
+			 se.beginTransaction();
+			 /*int sid=sup.getSuppId();
+			Supplier supobj=(Supplier)se.get(Supplier.class,sid);
+			supobj.setSuppName(sup.getSuppName());
+			supobj.setContactNo(sup.getContactNo());
+			supobj.setSuppAdd(sup.getSuppAdd());*/
+			Category supobj=(Category)se.get(Category.class,se);
+			 se.update(supobj);
+			 se.getTransaction().commit();
 		
-	
-
+			 se.close();
+			
+			
+		}
 	
 }
